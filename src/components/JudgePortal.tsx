@@ -423,21 +423,32 @@ export const JudgePortal: React.FC<JudgePortalProps> = ({
       ev.programmeId === selectedProgId && ev.judgeId === currentUser.id
     );
 
+    // Auto-calculate top 1st, 2nd, and 3rd place candidate IDs by score descending if not explicitly set
+    const candidatesByScore = [...activeParticipants].sort((a, b) => {
+      const scoreA = getParticipantScores(a.id).totalScore;
+      const scoreB = getParticipantScores(b.id).totalScore;
+      return scoreB - scoreA;
+    });
+
+    const targetFirstId = firstPlaceId || (candidatesByScore[0] && getParticipantScores(candidatesByScore[0].id).totalScore > 0 ? candidatesByScore[0].id : '');
+    const targetSecondId = secondPlaceId || (candidatesByScore[1] && getParticipantScores(candidatesByScore[1].id).totalScore > 0 ? candidatesByScore[1].id : '');
+    const targetThirdId = thirdPlaceId || (candidatesByScore[2] && getParticipantScores(candidatesByScore[2].id).totalScore > 0 ? candidatesByScore[2].id : '');
+
     // Formulate published results positions: 1st, 2nd, 3rd places with fallback to score-sorted
     const rankings = activeParticipants.map(part => {
       const item = getParticipantScores(part.id);
       
       let pos = 4;
-      if (part.id === firstPlaceId) {
+      if (targetFirstId && part.id === targetFirstId) {
         pos = 1;
-      } else if (part.id === secondPlaceId) {
+      } else if (targetSecondId && part.id === targetSecondId) {
         pos = 2;
-      } else if (part.id === thirdPlaceId) {
+      } else if (targetThirdId && part.id === targetThirdId) {
         pos = 3;
       } else {
         // If not explicit, index them based on score descending among remaining
         const remaining = activeParticipants
-          .filter(p => p.id !== firstPlaceId && p.id !== secondPlaceId && p.id !== thirdPlaceId)
+          .filter(p => p.id !== targetFirstId && p.id !== targetSecondId && p.id !== targetThirdId)
           .map(p => getParticipantScores(p.id))
           .sort((a, b) => b.totalScore - a.totalScore);
         const idx = remaining.findIndex(r => r.participantId === part.id);

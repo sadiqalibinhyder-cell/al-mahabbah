@@ -916,6 +916,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }
 
     if (sourceRankings && sourceRankings.length > 0) {
+      const hasPos1 = sourceRankings.some(r => r.position === 1 && (r.participantId || r.participantName));
+      if (!hasPos1) {
+        const sortedByScore = [...sourceRankings].sort((a, b) => (b.totalScore || 0) - (a.totalScore || 0));
+        sortedByScore.forEach((r, idx) => {
+          if (idx === 0) r.position = 1;
+          else if (idx === 1) r.position = 2;
+          else if (idx === 2) r.position = 3;
+          else r.position = idx + 1;
+        });
+      }
+
       const sortedRanks = [...sourceRankings].sort((a, b) => a.position - b.position);
       const top3Ranks = [1, 2, 3].map(pos => {
         const found = sortedRanks.find(r => r.position === pos);
