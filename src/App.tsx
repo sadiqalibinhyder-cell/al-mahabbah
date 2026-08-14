@@ -42,7 +42,10 @@ export default function App() {
   const [settings, setSettings] = useState<SystemSettings>(db.settings);
   const [security, setSecurity] = useState<SecurityConfig>(db.security);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>(db.auditLogs);
-  const [muallims, setMuallims] = useState<Muallim[]>(db.muallims);
+  const [muallims, setMuallims] = useState<Muallim[]>(() => {
+    const loaded = loadFromStorage<Muallim[]>('muallims', db.muallims);
+    return loaded.map(m => (m.id === 'muallim_1' || m.designation.toLowerCase().includes('swadar')) && (!m.photoUrl || m.photoUrl.includes('unsplash.com')) ? { ...m, photoUrl: '/swadar_usthad.jpg' } : m);
+  });
   const [committee, setCommittee] = useState<CommitteeMember[]>(() => {
     const loaded = loadFromStorage<CommitteeMember[]>('committee', db.committee);
     return loaded.filter(c => c.id !== 'comm_4' && c.id !== 'comm_5' && c.id !== 'comm_6');

@@ -6,7 +6,7 @@ export const initialMuallims: Muallim[] = [
     id: 'muallim_1',
     name: 'Usthad Sadiq Ali Jalali',
     designation: 'Swadar Muallim',
-    photoUrl: '',
+    photoUrl: '/swadar_usthad.jpg',
     qualification: 'M.A. Islamic Studies, Al Qasimi Jalali',
     experience: '18 Years Experience',
     phone: '+91 98470 12341'

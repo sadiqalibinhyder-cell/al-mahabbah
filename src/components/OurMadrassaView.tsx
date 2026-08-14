@@ -20,7 +20,7 @@ export const OurMadrassaView: React.FC<OurMadrassaViewProps> = ({
 
   const swadarName = swadarMuallim ? swadarMuallim.name : 'Sadiq Ali Jalali';
   const swadarDesignation = swadarMuallim ? swadarMuallim.designation : 'Swadar Muallim & Head of Institution';
-  const swadarPhoto = swadarMuallim ? swadarMuallim.photoUrl : '';
+  const swadarPhoto = (swadarMuallim && swadarMuallim.photoUrl) ? swadarMuallim.photoUrl : '/swadar_usthad.jpg';
 
   return (
     <div className="space-y-10 animate-fade-in pb-20 font-sans" id="our-madrassa-view">
