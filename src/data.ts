@@ -98,27 +98,6 @@ export const initialCommittee: CommitteeMember[] = [
     designation: 'Treasurer',
     photoUrl: '',
     phone: '+91 98471 00003'
-  },
-  {
-    id: 'comm_4',
-    name: 'K. P. Hamza Haji',
-    designation: 'Vice President',
-    photoUrl: '',
-    phone: '+91 98471 00004'
-  },
-  {
-    id: 'comm_5',
-    name: 'T. K. Shareef',
-    designation: 'Joint Secretary',
-    photoUrl: '',
-    phone: '+91 98471 00005'
-  },
-  {
-    id: 'comm_6',
-    name: 'M. P. Musthafa',
-    designation: 'Executive Member',
-    photoUrl: '',
-    phone: '+91 98471 00006'
   }
 ];
 
