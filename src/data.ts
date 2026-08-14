@@ -80,21 +80,21 @@ export const initialMuallims: Muallim[] = [
 export const initialCommittee: CommitteeMember[] = [
   {
     id: 'comm_1',
-    name: 'K. M. Koya Master',
+    name: 'Beeran Kutty',
     designation: 'Madrassa President',
     photoUrl: '',
     phone: '+91 98471 00001'
   },
   {
     id: 'comm_2',
-    name: 'C. H. Abdul Khader Haji',
+    name: 'Shihabudheen',
     designation: 'General Secretary',
     photoUrl: '',
     phone: '+91 98471 00002'
   },
   {
     id: 'comm_3',
-    name: 'P. V. Moideen Kutty',
+    name: 'Mujeeb Nizami',
     designation: 'Treasurer',
     photoUrl: '',
     phone: '+91 98471 00003'
