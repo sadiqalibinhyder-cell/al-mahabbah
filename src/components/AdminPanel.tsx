@@ -10,7 +10,7 @@ import {
   BarChart2, Plus, Edit, Trash2, Shield, Settings, FileText, 
   AlertCircle, Check, Users, ShieldAlert, Award, RefreshCw, RotateCcw, Undo,
   Sliders, MessageSquare, Database, MapPin, AppWindow, Globe, Clock, Copy, PlusCircle,
-  Lock, Unlock, UserCheck, Save, Sparkles, GraduationCap, Phone, ShieldCheck, Upload, Star, X
+  Lock, Unlock, UserCheck, Save, Sparkles, GraduationCap, Phone, ShieldCheck, Upload, Star, X, User
 } from 'lucide-react';
 import { saveToStorage } from '../data';
 
@@ -1489,7 +1489,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   {muallims.map((m) => (
                     <div key={m.id} className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3 flex flex-col justify-between">
                       <div className="space-y-2 text-center">
-                        <img src={m.photoUrl} alt={m.name} className="w-16 h-16 rounded-2xl object-cover mx-auto border border-emerald-500/40" />
+                        {m.photoUrl && !m.photoUrl.includes('unsplash.com') ? (
+                          <img src={m.photoUrl} alt={m.name} className="w-16 h-16 rounded-2xl object-cover mx-auto border border-emerald-500/40" />
+                        ) : (
+                          <div className="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center bg-gradient-to-br from-emerald-500/20 to-teal-600/20 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 font-bold shadow-xs">
+                            {m.designation.toLowerCase().includes('swadar') ? (
+                              <GraduationCap size={30} className="text-amber-500" />
+                            ) : (
+                              <User size={28} className="text-emerald-500" />
+                            )}
+                          </div>
+                        )}
                         <div>
                           <h5 className="font-extrabold text-sm text-neutral-900 dark:text-white">{m.name}</h5>
                           <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 block">{m.designation}</span>

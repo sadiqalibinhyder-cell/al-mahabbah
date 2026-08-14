@@ -6,7 +6,7 @@ export const initialMuallims: Muallim[] = [
     id: 'muallim_1',
     name: 'Usthad Sadiq Ali Jalali',
     designation: 'Swadar Muallim',
-    photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300',
+    photoUrl: '',
     qualification: 'M.A. Islamic Studies, Al Qasimi Jalali',
     experience: '18 Years Experience',
     phone: '+91 98470 12341'
@@ -15,7 +15,7 @@ export const initialMuallims: Muallim[] = [
     id: 'muallim_2',
     name: 'Usthad Abdul Gafoor Musliyar',
     designation: 'Staff Secretary',
-    photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300',
+    photoUrl: '',
     qualification: 'Fadhil Musliyar',
     experience: '15 Years Experience',
     phone: '+91 98470 12342'
@@ -24,7 +24,7 @@ export const initialMuallims: Muallim[] = [
     id: 'muallim_3',
     name: 'Usthad Sayyid Muhammed Koya',
     designation: 'Muallim',
-    photoUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=300',
+    photoUrl: '',
     qualification: 'Senior Islamic Faculty',
     experience: '12 Years Experience',
     phone: '+91 98470 12343'
@@ -33,7 +33,7 @@ export const initialMuallims: Muallim[] = [
     id: 'muallim_4',
     name: 'Usthad Abdul Kareem Musliyar',
     designation: 'Muallim',
-    photoUrl: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=300',
+    photoUrl: '',
     qualification: 'Fiqh & Hadith Specialist',
     experience: '14 Years Experience',
     phone: '+91 98470 12344'
@@ -42,7 +42,7 @@ export const initialMuallims: Muallim[] = [
     id: 'muallim_5',
     name: 'Usthad Yahya Anwari',
     designation: 'Fest Coordinator',
-    photoUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=300',
+    photoUrl: '',
     qualification: 'Anwari, Event Coordinator',
     experience: '10 Years Experience',
     phone: '+91 98470 12345'
@@ -51,7 +51,7 @@ export const initialMuallims: Muallim[] = [
     id: 'muallim_6',
     name: 'Usthad Unais Jalali',
     designation: 'Muallim',
-    photoUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=300',
+    photoUrl: '',
     qualification: 'Jalali, Arabic & Islamic Studies',
     experience: '9 Years Experience',
     phone: '+91 98470 12346'
@@ -60,7 +60,7 @@ export const initialMuallims: Muallim[] = [
     id: 'muallim_7',
     name: 'Usthad Ameen Yamani',
     designation: 'Muallim',
-    photoUrl: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=300',
+    photoUrl: '',
     qualification: 'Yamani, Quran & Tajweed Faculty',
     experience: '8 Years Experience',
     phone: '+91 98470 12347'
@@ -69,7 +69,7 @@ export const initialMuallims: Muallim[] = [
     id: 'muallim_8',
     name: 'Usthad Sidheeque Aslami',
     designation: 'Muallim',
-    photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300',
+    photoUrl: '',
     qualification: 'Aslami, Islamic Studies',
     experience: '7 Years Experience',
     phone: '+91 98470 12348'

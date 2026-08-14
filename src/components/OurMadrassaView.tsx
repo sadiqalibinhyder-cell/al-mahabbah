@@ -1,6 +1,6 @@
 import React from 'react';
 import { Muallim, CommitteeMember } from '../types';
-import { Landmark, GraduationCap, MapPin, Heart, ShieldCheck, Sparkles, Users, CheckCircle2, Calendar, FileText, Phone, Quote, Crown, Star, Sparkle } from 'lucide-react';
+import { Landmark, GraduationCap, MapPin, Heart, ShieldCheck, Sparkles, Users, CheckCircle2, Calendar, FileText, Phone, Quote, Crown, Star, Sparkle, User } from 'lucide-react';
 
 interface OurMadrassaViewProps {
   muallims?: Muallim[];
@@ -20,7 +20,7 @@ export const OurMadrassaView: React.FC<OurMadrassaViewProps> = ({
 
   const swadarName = swadarMuallim ? swadarMuallim.name : 'Sadiq Ali Jalali';
   const swadarDesignation = swadarMuallim ? swadarMuallim.designation : 'Swadar Muallim & Head of Institution';
-  const swadarPhoto = swadarMuallim ? swadarMuallim.photoUrl : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300';
+  const swadarPhoto = swadarMuallim ? swadarMuallim.photoUrl : '';
 
   return (
     <div className="space-y-10 animate-fade-in pb-20 font-sans" id="our-madrassa-view">
@@ -131,11 +131,17 @@ export const OurMadrassaView: React.FC<OurMadrassaViewProps> = ({
             <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl pointer-events-none"></div>
 
             <div className="relative shrink-0">
-              <img 
-                src={swadarPhoto} 
-                alt={swadarName} 
-                className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-amber-400 ring-4 ring-emerald-500/50 shadow-2xl group-hover:scale-105 transition-transform duration-500"
-              />
+              {swadarPhoto && !swadarPhoto.includes('unsplash.com') ? (
+                <img 
+                  src={swadarPhoto} 
+                  alt={swadarName} 
+                  className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-amber-400 ring-4 ring-emerald-500/50 shadow-2xl group-hover:scale-105 transition-transform duration-500"
+                />
+              ) : (
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-br from-amber-500/30 via-amber-400/20 to-yellow-600/30 border-2 border-amber-400 ring-4 ring-amber-400/30 flex items-center justify-center text-amber-300 shadow-2xl">
+                  <GraduationCap size={52} className="text-amber-400 drop-shadow-md" />
+                </div>
+              )}
               <span className="absolute -bottom-2 -right-2 bg-gradient-to-r from-amber-500 to-yellow-400 text-black p-1.5 rounded-xl shadow-lg border border-black/20" title="Swadar Muallim">
                 <Crown size={14} className="fill-black" />
               </span>
@@ -241,13 +247,27 @@ export const OurMadrassaView: React.FC<OurMadrassaViewProps> = ({
                   )}
 
                   <div className="relative inline-block">
-                    <img 
-                      src={m.photoUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300'} 
-                      alt={m.name} 
-                      className={`w-24 h-24 rounded-2xl object-cover mx-auto border-2 ${
-                        isSwadar ? 'border-amber-400 ring-4 ring-amber-400/40 shadow-2xl' : 'border-emerald-500/40 ring-4 ring-emerald-500/10 shadow-lg'
-                      }`}
-                    />
+                    {m.photoUrl && !m.photoUrl.includes('unsplash.com') ? (
+                      <img 
+                        src={m.photoUrl} 
+                        alt={m.name} 
+                        className={`w-24 h-24 rounded-2xl object-cover mx-auto border-2 ${
+                          isSwadar ? 'border-amber-400 ring-4 ring-amber-400/40 shadow-2xl' : 'border-emerald-500/40 ring-4 ring-emerald-500/10 shadow-lg'
+                        }`}
+                      />
+                    ) : (
+                      <div className={`w-24 h-24 rounded-2xl mx-auto flex items-center justify-center border-2 transition-all duration-300 shadow-md ${
+                        isSwadar 
+                          ? 'bg-gradient-to-br from-amber-500/20 via-amber-400/10 to-yellow-600/20 border-amber-400 text-amber-500 ring-4 ring-amber-400/30' 
+                          : 'bg-gradient-to-br from-emerald-500/20 via-teal-500/10 to-emerald-600/20 border-emerald-500/40 text-emerald-600 dark:text-emerald-400 ring-4 ring-emerald-500/10'
+                      }`}>
+                        {isSwadar ? (
+                          <GraduationCap size={44} className="text-amber-500 drop-shadow-md" />
+                        ) : (
+                          <User size={40} className="text-emerald-600 dark:text-emerald-400 drop-shadow-md" />
+                        )}
+                      </div>
+                    )}
                     {isSwadar && (
                       <span className="absolute -bottom-1 -right-1 bg-amber-500 text-black p-1 rounded-full shadow-lg" title="Swadar Muallim">
                         <Star size={12} className="fill-black" />
