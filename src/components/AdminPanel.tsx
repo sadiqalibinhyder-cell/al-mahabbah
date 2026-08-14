@@ -1630,7 +1630,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   {committee.map((c) => (
                     <div key={c.id} className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3 flex flex-col justify-between">
                       <div className="space-y-2 text-center">
-                        <img src={c.photoUrl} alt={c.name} className="w-16 h-16 rounded-2xl object-cover mx-auto border border-amber-500/40" />
+                        {c.photoUrl && !c.photoUrl.includes('unsplash.com') ? (
+                          <img src={c.photoUrl} alt={c.name} className="w-16 h-16 rounded-2xl object-cover mx-auto border border-amber-500/40" />
+                        ) : (
+                          <div className="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center bg-gradient-to-br from-amber-500/20 via-amber-400/10 to-yellow-600/20 border border-amber-500/40 text-amber-500 font-bold shadow-xs">
+                            <ShieldCheck size={30} className="text-amber-500" />
+                          </div>
+                        )}
                         <div>
                           <h5 className="font-extrabold text-sm text-neutral-900 dark:text-white">{c.name}</h5>
                           <span className="text-[10px] font-bold text-amber-600 dark:text-amber-400 block">{c.designation}</span>

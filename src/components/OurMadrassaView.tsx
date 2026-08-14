@@ -327,11 +327,17 @@ export const OurMadrassaView: React.FC<OurMadrassaViewProps> = ({
           {committee.map((c) => (
             <div key={c.id} className="premium-card p-6 text-center space-y-4 border border-amber-500/20 hover:scale-[1.02] transition-all shadow-md flex flex-col justify-between">
               <div className="space-y-3">
-                <img 
-                  src={c.photoUrl || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=300'} 
-                  alt={c.name} 
-                  className="w-20 h-20 rounded-2xl object-cover mx-auto border-2 border-amber-500/40 shadow-md"
-                />
+                {c.photoUrl && !c.photoUrl.includes('unsplash.com') ? (
+                  <img 
+                    src={c.photoUrl} 
+                    alt={c.name} 
+                    className="w-20 h-20 rounded-2xl object-cover mx-auto border-2 border-amber-500/40 shadow-md"
+                  />
+                ) : (
+                  <div className="w-20 h-20 rounded-2xl mx-auto flex items-center justify-center bg-gradient-to-br from-amber-500/20 via-amber-400/10 to-yellow-600/20 border-2 border-amber-500/40 text-amber-500 shadow-md">
+                    <ShieldCheck size={38} className="text-amber-500 drop-shadow-md" />
+                  </div>
+                )}
 
                 <div>
                   <span className="inline-block px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 text-[10px] font-extrabold uppercase tracking-wider mb-1">
