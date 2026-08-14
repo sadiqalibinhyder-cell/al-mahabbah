@@ -43,7 +43,10 @@ export default function App() {
   const [security, setSecurity] = useState<SecurityConfig>(db.security);
   const [auditLogs, setAuditLogs] = useState<AuditLog[]>(db.auditLogs);
   const [muallims, setMuallims] = useState<Muallim[]>(db.muallims);
-  const [committee, setCommittee] = useState<CommitteeMember[]>(db.committee);
+  const [committee, setCommittee] = useState<CommitteeMember[]>(() => {
+    const loaded = loadFromStorage<CommitteeMember[]>('committee', db.committee);
+    return loaded.filter(c => c.id !== 'comm_4' && c.id !== 'comm_5' && c.id !== 'comm_6');
+  });
 
   const handleUpdateMuallims = (updated: Muallim[]) => {
     setMuallims(updated);
@@ -134,7 +137,10 @@ export default function App() {
             });
           }
           if (Array.isArray(data.muallims)) setMuallims(data.muallims);
-          if (Array.isArray(data.committee)) setCommittee(data.committee);
+          if (Array.isArray(data.committee)) {
+            const filteredComm = data.committee.filter((c: any) => c.id !== 'comm_4' && c.id !== 'comm_5' && c.id !== 'comm_6');
+            setCommittee(filteredComm);
+          }
         }
         setIsDataLoaded(true);
       };

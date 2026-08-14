@@ -1627,7 +1627,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
                 {/* List of Committee Members */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {committee.map((c) => (
+                  {committee.filter(c => c.id !== 'comm_4' && c.id !== 'comm_5' && c.id !== 'comm_6' && !['Vice President', 'Joint Secretary', 'Executive Member'].includes(c.designation)).map((c) => (
                     <div key={c.id} className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3 flex flex-col justify-between">
                       <div className="space-y-2 text-center">
                         {c.photoUrl && !c.photoUrl.includes('unsplash.com') ? (

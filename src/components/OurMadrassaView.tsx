@@ -324,7 +324,7 @@ export const OurMadrassaView: React.FC<OurMadrassaViewProps> = ({
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {committee.map((c) => (
+          {committee.filter(c => c.id !== 'comm_4' && c.id !== 'comm_5' && c.id !== 'comm_6' && !['Vice President', 'Joint Secretary', 'Executive Member'].includes(c.designation)).map((c) => (
             <div key={c.id} className="premium-card p-6 text-center space-y-4 border border-amber-500/20 hover:scale-[1.02] transition-all shadow-md flex flex-col justify-between">
               <div className="space-y-3">
                 {c.photoUrl && !c.photoUrl.includes('unsplash.com') ? (
