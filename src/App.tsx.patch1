@@ -1,0 +1,2 @@
+import React, { useState, useEffect } from 'react';
+import { Home, Trophy, Calendar, Grid, Image as ImageIcon, Bell, Settings, LogIn, LayoutDashboard, Flag } from 'lucide-react';

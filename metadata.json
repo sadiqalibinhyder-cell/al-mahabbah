@@ -1,0 +1,6 @@
+{
+  "name": "ArtsPortal",
+  "description": "College Arts Festival Management and Results Portal - A premium, integrated system for planning, registration, scoring, results, scoreboard, and appeal management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

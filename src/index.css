@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+}
+
+/* Base styling inspired by One UI / iOS */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #f5f5f7; /* iOS standard light background */
+  color: #1d1d1f; /* Apple standard dark text */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dark body {
+  background-color: #000000;
+  color: #f5f5f7;
+}
+
+/* unified card language */
+.premium-card {
+  background-color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0,0,0,0.02);
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+.dark .premium-card {
+  background-color: #1c1c1e; /* iOS dark mode elevated surface */
+  box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.premium-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px -8px rgba(0, 0, 0, 0.08);
+}
+.dark .premium-card:hover {
+  box-shadow: 0 8px 30px -8px rgba(0, 0, 0, 0.4);
+}
+
+/* Subtle surfaces for secondary content */
+.premium-surface {
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+}
+.dark .premium-surface {
+  background-color: rgba(28, 28, 30, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Bottom Nav bar */
+.bottom-nav-bar {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+.dark .bottom-nav-bar {
+  background-color: rgba(28, 28, 30, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Top Nav bar Desktop */
+.top-nav-bar {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.dark .top-nav-bar {
+  background-color: rgba(18, 18, 18, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@keyframes phoneVerticalAutoScroll {
+  0% {
+    transform: translateY(0%);
+  }
+  45% {
+    transform: translateY(-42%);
+  }
+  55% {
+    transform: translateY(-42%);
+  }
+  95% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+.animate-phone-auto-scroll {
+  animation: phoneVerticalAutoScroll 14s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+.animate-phone-auto-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Safe areas */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 20px);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 20px);
+}
+
+/* Animations */
+@keyframes slideUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
