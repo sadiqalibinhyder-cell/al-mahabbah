@@ -430,9 +430,9 @@ export const JudgePortal: React.FC<JudgePortalProps> = ({
       return scoreB - scoreA;
     });
 
-    const targetFirstId = firstPlaceId || (candidatesByScore[0] && getParticipantScores(candidatesByScore[0].id).totalScore > 0 ? candidatesByScore[0].id : '');
-    const targetSecondId = secondPlaceId || (candidatesByScore[1] && getParticipantScores(candidatesByScore[1].id).totalScore > 0 ? candidatesByScore[1].id : '');
-    const targetThirdId = thirdPlaceId || (candidatesByScore[2] && getParticipantScores(candidatesByScore[2].id).totalScore > 0 ? candidatesByScore[2].id : '');
+    const targetFirstId = firstPlaceId || candidatesByScore[0]?.id || '';
+    const targetSecondId = secondPlaceId || candidatesByScore[1]?.id || '';
+    const targetThirdId = thirdPlaceId || candidatesByScore[2]?.id || '';
 
     // Formulate published results positions: 1st, 2nd, 3rd places with fallback to score-sorted
     const rankings = activeParticipants.map(part => {
