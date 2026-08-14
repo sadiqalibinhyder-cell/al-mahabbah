@@ -68,21 +68,23 @@ export interface UserProfile {
 }
 
 export interface Evaluation {
+  id?: string;
   programmeId: string;
-  participantId: string; // User ID
-  participantName: string;
-  teamId: string;
-  scores: {
+  participantId?: string; // User ID
+  participantName?: string;
+  teamId?: string;
+  scores?: {
     creativity: number;
     technical: number;
     presentation: number;
     originality: number;
   };
-  totalScore: number;
-  remarks: string;
-  status: 'Draft' | 'Locked';
-  judgeId: string;
+  totalScore?: number;
+  remarks?: string;
+  status?: 'Draft' | 'Locked';
+  judgeId?: string;
   grade?: 'A' | 'B' | 'C' | 'None';
+  rankings?: RankingDetail[];
 }
 
 export interface RankingDetail {

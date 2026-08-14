@@ -87,8 +87,22 @@ export const JudgePortal: React.FC<JudgePortalProps> = ({
       return;
     }
 
+    // Check if jury submitted evaluation object exists
+    const juryEval = evList.find(ev => (ev.id === `jury_submitted_${selectedProgId}` || ev.programmeId === selectedProgId) && ev.rankings && Array.isArray(ev.rankings));
+    if (juryEval && juryEval.rankings && Array.isArray(juryEval.rankings)) {
+      const p1 = juryEval.rankings.find((rk: any) => rk.position === 1)?.participantId || '';
+      const p2 = juryEval.rankings.find((rk: any) => rk.position === 2)?.participantId || '';
+      const p3 = juryEval.rankings.find((rk: any) => rk.position === 3)?.participantId || '';
+      if (p1 || p2 || p3) {
+        setFirstPlaceId(p1);
+        setSecondPlaceId(p2);
+        setThirdPlaceId(p3);
+        return;
+      }
+    }
+
     const currentProgEvals = evList.filter(ev => 
-      ev.programmeId === selectedProgId && (ev.judgeId === currentUser.id || !ev.judgeId) && ev.totalScore > 0
+      ev.programmeId === selectedProgId && (ev.judgeId === currentUser.id || !ev.judgeId) && !ev.id?.startsWith('jury_submitted_')
     );
 
     if (currentProgEvals.length === 0) return;
@@ -103,11 +117,6 @@ export const JudgePortal: React.FC<JudgePortalProps> = ({
     setFirstPlaceId(p1);
     setSecondPlaceId(p2);
     setThirdPlaceId(p3);
-
-    localStorage.setItem(
-      `jury_winners_${selectedProgId}_${currentUser.id}`,
-      JSON.stringify({ firstPlaceId: p1, secondPlaceId: p2, thirdPlaceId: p3 })
-    );
   };
 
   // Synchronize 1st, 2nd, and 3rd place winners from results or evaluations
@@ -259,6 +268,26 @@ export const JudgePortal: React.FC<JudgePortalProps> = ({
     );
 
     if (existing) return existing;
+
+    // Check if jury submitted rankings has candidate evaluation data
+    const juryEval = evaluations.find(ev => (ev.id === `jury_submitted_${selectedProgId}` || ev.programmeId === selectedProgId) && ev.rankings && Array.isArray(ev.rankings));
+    if (juryEval && juryEval.rankings) {
+      const rk = juryEval.rankings.find((r: any) => r.participantId === participantId);
+      if (rk) {
+        return {
+          programmeId: selectedProgId || '',
+          participantId: participantId,
+          participantName: rk.participantName || users.find(u => u.id === participantId)?.name || 'Unknown',
+          teamId: rk.teamId || users.find(u => u.id === participantId)?.teamId || '',
+          scores: { creativity: Math.floor((rk.totalScore || 0) / 4), technical: Math.floor((rk.totalScore || 0) / 4), presentation: Math.floor((rk.totalScore || 0) / 4), originality: (rk.totalScore || 0) - Math.floor((rk.totalScore || 0) / 4) * 3 },
+          totalScore: rk.totalScore || 0,
+          grade: rk.grade || 'None',
+          remarks: rk.remarks || '',
+          status: 'Locked' as const,
+          judgeId: currentUser?.id || '',
+        };
+      }
+    }
 
     // Default template
     return {
