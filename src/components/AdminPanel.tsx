@@ -892,9 +892,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       }
     }
 
-    if (!sourceRankings) {
+    if (!sourceRankings || !sourceRankings.some(r => r.participantId || r.participantName)) {
       const progEvals = evaluations.filter(ev => ev.programmeId === progId && !ev.id?.startsWith('jury_submitted_'));
-      if (progEvals.length > 0) {
+      if (progEvals.length > 0 && progEvals.some(ev => ev.totalScore > 0)) {
         const sortedEvals = [...progEvals].sort((a, b) => b.totalScore - a.totalScore);
         sourceRankings = [1, 2, 3].map(pos => {
           const ev = sortedEvals[pos - 1];
@@ -910,6 +910,46 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             grade: ev.grade || (pos === 1 ? 'A' : pos === 2 ? 'B' : 'C'),
             points: pos === 1 ? rule.firstPlace : pos === 2 ? rule.secondPlace : pos === 3 ? rule.thirdPlace : 0,
             totalScore: ev.totalScore
+          };
+        });
+      } else {
+        const progGroupStr = (progInfo?.categoryGroup || `${progInfo?.categoryLevel || ''} ${progInfo?.category || ''} ${progInfo?.gender || ''}`).toLowerCase();
+        const isGirlsProg = progGroupStr.includes('girls') || (progInfo?.gender && progInfo.gender.toLowerCase() === 'girls');
+        const isBoysProg = progGroupStr.includes('boys') || (progInfo?.gender && progInfo.gender.toLowerCase() === 'boys');
+        const targetCat = progGroupStr.includes('sub junior') ? 'Sub Junior' :
+                          progGroupStr.includes('super senior') ? 'Super Senior' :
+                          progGroupStr.includes('junior') ? 'Junior' :
+                          progGroupStr.includes('senior') ? 'Senior' :
+                          progGroupStr.includes('kiddies') ? 'Kiddies' : null;
+
+        const matchesCatGen = (s: UserProfile) => {
+          const sGender = s.gender || (s.teamId?.includes('girls') ? 'Girls' : 'Boys');
+          if (isGirlsProg && sGender !== 'Girls') return false;
+          if (isBoysProg && sGender !== 'Boys') return false;
+          if (targetCat) {
+            const sCat = s.category || (s.studentClass ? (parseInt(s.studentClass) <= 4 ? 'Sub Junior' : parseInt(s.studentClass) <= 6 ? 'Junior' : parseInt(s.studentClass) <= 8 ? 'Senior' : 'Super Senior') : null);
+            if (sCat && sCat.toLowerCase() !== targetCat.toLowerCase()) return false;
+          }
+          return true;
+        };
+
+        const registered = users.filter(u => u.role === 'student' && u.registeredProgrammeIds?.includes(progId));
+        const filteredCatReg = registered.filter(matchesCatGen);
+        const filteredCatAll = users.filter(u => u.role === 'student' && matchesCatGen(u));
+        const enrolled = filteredCatReg.length > 0 ? filteredCatReg : (filteredCatAll.length > 0 ? filteredCatAll : (registered.length > 0 ? registered : users.filter(u => u.role === 'student')));
+
+        sourceRankings = [1, 2, 3].map(pos => {
+          const s = enrolled[pos - 1];
+          if (!s) return { position: pos, participantId: '', participantName: '', teamId: '', teamName: '', grade: pos === 1 ? 'A' : pos === 2 ? 'B' : 'C', points: pos === 1 ? rule.firstPlace : pos === 2 ? rule.secondPlace : rule.thirdPlace };
+          const t = teams.find(team => team.id === s.teamId);
+          return {
+            position: pos,
+            participantId: s.id,
+            participantName: s.name,
+            teamId: s.teamId || '',
+            teamName: t ? t.name : '',
+            grade: pos === 1 ? 'A' : pos === 2 ? 'B' : pos === 3 ? 'C' : 'None',
+            points: pos === 1 ? rule.firstPlace : pos === 2 ? rule.secondPlace : pos === 3 ? rule.thirdPlace : 0
           };
         });
       }
