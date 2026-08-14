@@ -7755,10 +7755,6 @@ export const DEFAULT_AUDIT_LOGS: AuditLog[] = [
 
 // Helper to safely load data from localStorage
 export function loadFromStorage<T>(key: string, defaultValue: T): T {
-  // Competition scores and official results MUST ONLY originate from the central database
-  if (['results', 'teams', 'evaluations'].includes(key)) {
-    return defaultValue;
-  }
   try {
     const item = localStorage.getItem(`artsportal_${key}`);
     const parsed = item ? JSON.parse(item) : null;
@@ -7775,10 +7771,7 @@ export function loadFromStorage<T>(key: string, defaultValue: T): T {
 // Helper to save data to localStorage and sync to backend
 export function saveToStorage<T>(key: string, value: T): void {
   try {
-    // Only store harmless UI/non-score data in localStorage
-    if (!['results', 'teams', 'evaluations'].includes(key)) {
-      localStorage.setItem(`artsportal_${key}`, JSON.stringify(value));
-    }
+    localStorage.setItem(`artsportal_${key}`, JSON.stringify(value));
     
     // Sync to central backend
     if (typeof window !== 'undefined') {

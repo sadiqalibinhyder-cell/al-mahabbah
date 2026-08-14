@@ -35,7 +35,7 @@ export default function App() {
   const [programmes, setProgrammes] = useState<Programme[]>(() => enrichProgrammesWithSchedule(db.programmes));
   const [teams, setTeams] = useState<Team[]>(db.teams);
   const [users, setUsers] = useState<UserProfile[]>(db.users);
-  const [results, setResults] = useState<PublishedResult[]>(db.results);
+  const [results, setResults] = useState<PublishedResult[]>(() => loadFromStorage('results', db.results));
   const [appeals, setAppeals] = useState<Appeal[]>(db.appeals);
   const [feedback, setFeedback] = useState<Feedback[]>(db.feedback);
   const [announcements, setAnnouncements] = useState<Announcement[]>(db.announcements);
@@ -54,7 +54,7 @@ export default function App() {
     setCommittee(updated);
     saveToStorage('committee', updated);
   };
-  const [evaluations, setEvaluations] = useState<any[]>([]);
+  const [evaluations, setEvaluations] = useState<any[]>(() => loadFromStorage('evaluations', []));
 
   const handleUpdateEvaluations = (newEvals: any[]) => {
     setEvaluations(newEvals);

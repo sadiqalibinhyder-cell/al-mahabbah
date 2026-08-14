@@ -729,14 +729,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [localEvaluations, setLocalEvaluations] = useState<any[]>([]);
 
   useEffect(() => {
-    if (activeTab === 'JudgeControl') {
-      const stored = localStorage.getItem('evaluations');
-      if (stored) {
-        try {
-          setLocalEvaluations(JSON.parse(stored));
-        } catch (e) {
-          console.error(e);
-        }
+    const stored = localStorage.getItem('artsportal_evaluations') || localStorage.getItem('evaluations');
+    if (stored) {
+      try {
+        setLocalEvaluations(JSON.parse(stored));
+      } catch (e) {
+        console.error(e);
       }
     }
   }, [activeTab]);
@@ -888,7 +886,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     if (currentResult && currentResult.rankings && currentResult.rankings.length > 0) {
       sourceRankings = currentResult.rankings;
     } else {
-      const juryEval = evaluations.find(ev => ev.id === `jury_submitted_${progId}`);
+      const juryEval = evaluations.find(ev => (ev.id === `jury_submitted_${progId}` || ev.programmeId === progId) && ev.rankings && Array.isArray(ev.rankings));
       if (juryEval && juryEval.rankings && Array.isArray(juryEval.rankings)) {
         sourceRankings = juryEval.rankings;
       }
@@ -3085,6 +3083,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                     className="w-full px-3 py-2 rounded-lg bg-white/40 dark:bg-white/5 border border-white/40 dark:border-white/10 text-neutral-800 dark:text-neutral-250 focus:outline-none"
                                   >
                                     <option value="">-- Choose student (or type manual) --</option>
+                                    {currentRank.participantId && !enrolledStudents.some(s => s.id === currentRank.participantId) && (
+                                      <option value={currentRank.participantId}>
+                                        {currentRank.participantName || 'Selected Participant'} ({currentRank.teamName || teams.find(t => t.id === currentRank.teamId)?.name || 'House Team'})
+                                      </option>
+                                    )}
                                     {enrolledStudents.map(s => (
                                       <option key={s.id} value={s.id}>
                                         #{s.chestNo || 'No Chest'} - {s.name} ({teams.find(t => t.id === s.teamId)?.name || 'No House'})
@@ -3346,7 +3349,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                     )
                                   ) : (() => {
                                     let submittedRanks: any[] | null = null;
-                                    const juryEval = evaluations.find(ev => ev.id === `jury_submitted_${prog.id}`);
+                                    const juryEval = evaluations.find(ev => (ev.id === `jury_submitted_${prog.id}` || ev.programmeId === prog.id) && ev.rankings && Array.isArray(ev.rankings));
                                     if (juryEval && juryEval.rankings) {
                                       submittedRanks = juryEval.rankings;
                                     }
