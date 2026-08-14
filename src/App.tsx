@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { initializeDatabase, saveToStorage } from './data';
+import { initializeDatabase, saveToStorage, loadFromStorage } from './data';
 import { UserProfile, Programme, Team, PublishedResult, Appeal, Feedback, Announcement, SystemSettings, SecurityConfig, AuditLog, Muallim, CommitteeMember, AppReview } from './types';
 
 import { enrichProgrammesWithSchedule } from './utils/scheduleData';
