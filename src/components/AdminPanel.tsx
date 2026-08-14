@@ -3366,29 +3366,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                     }
 
                                     const progEvals = evaluations.filter(ev => ev.programmeId === prog.id && !ev.id?.startsWith('jury_submitted_'));
+                                    const isJuryHandedOver = (submittedRanks && submittedRanks.length > 0) || progEvals.length > 0 || prog.locked === true || prog.status === 'Evaluating' || evaluations.some(ev => ev.programmeId === prog.id);
 
-                                    if (submittedRanks && submittedRanks.length > 0) {
-                                      const topWinner = submittedRanks.find((r: any) => r.position === 1);
+                                    if (isJuryHandedOver) {
+                                      const topWinner = (submittedRanks && submittedRanks.find((r: any) => r.position === 1)) || null;
+                                      const topEval = progEvals.length > 0 ? [...progEvals].sort((a, b) => b.totalScore - a.totalScore)[0] : null;
+                                      const topStudent = topEval ? users.find(u => u.id === topEval.participantId) : null;
+                                      const winnerName = topWinner?.participantName || topStudent?.name || topEval?.participantName || 'Handed Over to Admin';
+
                                       return (
                                         <div className="space-y-1">
                                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-700 dark:text-purple-300 font-bold text-[9px] uppercase border border-purple-500/30 animate-pulse">
                                             ⏳ Pending Admin Review
                                           </span>
                                           <div className="text-[9px] text-purple-600 dark:text-purple-400 font-bold">
-                                            Jury 1st: {topWinner?.participantName || 'Selected Candidate'}
-                                          </div>
-                                        </div>
-                                      );
-                                    } else if (progEvals.length > 0) {
-                                      const topEval = [...progEvals].sort((a, b) => b.totalScore - a.totalScore)[0];
-                                      const topStudent = users.find(u => u.id === topEval?.participantId);
-                                      return (
-                                        <div className="space-y-1">
-                                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-700 dark:text-purple-300 font-bold text-[9px] uppercase border border-purple-500/30">
-                                            📝 Jury Evaluated
-                                          </span>
-                                          <div className="text-[9px] text-purple-600 dark:text-purple-400 font-bold">
-                                            1st: {topStudent?.name || topEval?.participantName || 'Candidate'}
+                                            Jury 1st: {winnerName}
                                           </div>
                                         </div>
                                       );
@@ -3436,7 +3428,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                       </>
                                     )}
                                     {(() => {
-                                      const isSubmitted = evaluations.some(ev => ev.id === `jury_submitted_${prog.id}` || (ev.programmeId === prog.id && ev.status === 'Locked'));
+                                      const isSubmitted = prog.locked === true || prog.status === 'Evaluating' || evaluations.some(ev => ev.programmeId === prog.id);
                                       const isRecalled = res && !prog.resultPublished;
                                       return (
                                         <button

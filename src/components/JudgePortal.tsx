@@ -396,24 +396,18 @@ export const JudgePortal: React.FC<JudgePortalProps> = ({
   const handleLockEvaluation = () => {
     if (!selectedProgId || !currentUser) return;
 
-    // Check if at least one candidate has marks or winners designated
-    const evaluatedParticipants = activeParticipants.filter(p => {
-      const item = getParticipantScores(p.id);
-      return item.totalScore > 0 || p.id === firstPlaceId || p.id === secondPlaceId || p.id === thirdPlaceId;
-    });
-
-    if (evaluatedParticipants.length === 0 && activeParticipants.length > 0) {
-      setErrorMsg('Please enter marks out of 100 or select winners before locking the evaluation sheet.');
-      setTimeout(() => setErrorMsg(''), 4500);
-      return;
-    }
-
-    // Set all evaluations for this program to 'Locked'
-    const updatedEvals = evaluations.map(ev => {
-      if (ev.programmeId === selectedProgId && ev.judgeId === currentUser.id) {
-        return { ...ev, status: 'Locked' as const };
+    // Ensure all active participants have evaluation records locked in updatedEvals
+    let updatedEvals = [...evaluations];
+    activeParticipants.forEach(part => {
+      const existingIdx = updatedEvals.findIndex(ev => 
+        ev.programmeId === selectedProgId && ev.participantId === part.id && (ev.judgeId === currentUser.id || !ev.judgeId)
+      );
+      const scoresObj = getParticipantScores(part.id);
+      if (existingIdx !== -1) {
+        updatedEvals[existingIdx] = { ...updatedEvals[existingIdx], status: 'Locked' as const };
+      } else {
+        updatedEvals.push({ ...scoresObj, status: 'Locked' as const });
       }
-      return ev;
     });
 
     onUpdateEvaluations(updatedEvals);
