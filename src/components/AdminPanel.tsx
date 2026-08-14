@@ -888,14 +888,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     if (currentResult && currentResult.rankings && currentResult.rankings.length > 0) {
       sourceRankings = currentResult.rankings;
     } else {
-      const juryEval = evaluations.find(ev => ev.id === `jury_submitted_${progId}` || ev.programmeId === progId);
+      const juryEval = evaluations.find(ev => ev.id === `jury_submitted_${progId}`);
       if (juryEval && juryEval.rankings && Array.isArray(juryEval.rankings)) {
         sourceRankings = juryEval.rankings;
       }
     }
 
     if (!sourceRankings) {
-      const progEvals = evaluations.filter(ev => ev.programmeId === progId);
+      const progEvals = evaluations.filter(ev => ev.programmeId === progId && !ev.id?.startsWith('jury_submitted_'));
       if (progEvals.length > 0) {
         const sortedEvals = [...progEvals].sort((a, b) => b.totalScore - a.totalScore);
         sourceRankings = [1, 2, 3].map(pos => {
@@ -3346,12 +3346,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                     )
                                   ) : (() => {
                                     let submittedRanks: any[] | null = null;
-                                    const juryEval = evaluations.find(ev => ev.id === `jury_submitted_${prog.id}` || ev.programmeId === prog.id);
+                                    const juryEval = evaluations.find(ev => ev.id === `jury_submitted_${prog.id}`);
                                     if (juryEval && juryEval.rankings) {
                                       submittedRanks = juryEval.rankings;
                                     }
 
-                                    const progEvals = evaluations.filter(ev => ev.programmeId === prog.id);
+                                    const progEvals = evaluations.filter(ev => ev.programmeId === prog.id && !ev.id?.startsWith('jury_submitted_'));
 
                                     if (submittedRanks && submittedRanks.length > 0) {
                                       const topWinner = submittedRanks.find((r: any) => r.position === 1);
@@ -3422,7 +3422,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                       </>
                                     )}
                                     {(() => {
-                                      const isSubmitted = evaluations.some(ev => ev.id === `jury_submitted_${prog.id}` || ev.programmeId === prog.id);
+                                      const isSubmitted = evaluations.some(ev => ev.id === `jury_submitted_${prog.id}` || (ev.programmeId === prog.id && ev.status === 'Locked'));
                                       const isRecalled = res && !prog.resultPublished;
                                       return (
                                         <button
@@ -4066,7 +4066,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
                     <div className="space-y-6">
                       {programmes.map((prog) => {
-                        const progEvaluations = evaluations.filter(ev => ev.programmeId === prog.id);
+                        const progEvaluations = evaluations.filter(ev => ev.programmeId === prog.id && !ev.id?.startsWith('jury_submitted_'));
                         const isLocked = prog.locked === true;
 
                         return (

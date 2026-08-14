@@ -552,7 +552,12 @@ export default function App() {
       judgeName: currentUser.name,
       timestamp: new Date().toISOString()
     };
-    const updatedEvals = [...evaluations.filter(e => e.programmeId !== programmeId && e.id !== `jury_submitted_${programmeId}`), newEval];
+    // Mark all existing individual evaluations for this programme as Locked and append jury_submitted record
+    const updatedEvals = evaluations
+      .filter(e => e.id !== `jury_submitted_${programmeId}`)
+      .map(e => (e.programmeId === programmeId ? { ...e, status: 'Locked' as const } : e));
+    updatedEvals.push(newEval);
+
     setEvaluations(updatedEvals);
     saveToStorage('evaluations', updatedEvals);
 
