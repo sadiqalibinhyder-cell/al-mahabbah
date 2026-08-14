@@ -124,8 +124,15 @@ export default function App() {
           setAnnouncements(data.announcements || db.announcements);
           setSettings(data.settings || db.settings);
           setSecurity(data.security || db.security);
-          setAuditLogs(data.auditLogs || db.auditLogs);
-          if (data.evaluations) setEvaluations(data.evaluations);
+          if (data.evaluations && Array.isArray(data.evaluations)) {
+            setEvaluations(prev => {
+              if (data.evaluations.length === 0 && prev.length > 0) return prev;
+              const map = new Map<string, any>();
+              prev.forEach(e => map.set(e.id || `${e.programmeId}_${e.participantId}_${e.judgeId || 'j'}`, e));
+              data.evaluations.forEach((e: any) => map.set(e.id || `${e.programmeId}_${e.participantId}_${e.judgeId || 'j'}`, e));
+              return Array.from(map.values());
+            });
+          }
           if (Array.isArray(data.muallims)) setMuallims(data.muallims);
           if (Array.isArray(data.committee)) setCommittee(data.committee);
         }

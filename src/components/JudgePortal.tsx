@@ -255,7 +255,7 @@ export const JudgePortal: React.FC<JudgePortalProps> = ({
   // Initialize/get evaluation score details for a participant
   const getParticipantScores = (participantId: string) => {
     const existing = evaluations.find(ev => 
-      ev.programmeId === selectedProgId && ev.participantId === participantId && ev.judgeId === currentUser?.id
+      ev.programmeId === selectedProgId && ev.participantId === participantId && (ev.judgeId === currentUser?.id || !ev.judgeId || !currentUser?.id)
     );
 
     if (existing) return existing;
